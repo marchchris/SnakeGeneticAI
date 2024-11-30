@@ -20,6 +20,7 @@ public class MatrixOperations {
     // Method for matrix multiplication
     public static double[][] multiply(double[][] matrixA, double[][] matrixB) {
         if (matrixA[0].length != matrixB.length) {
+            System.out.println("Matrix A columns: " + matrixA[0].length + " Matrix B rows: " + matrixB.length);
             throw new IllegalArgumentException("Number of columns in Matrix A must equal number of rows in Matrix B for multiplication.");
         }
 

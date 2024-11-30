@@ -13,6 +13,7 @@ public class NeuralNetwork {
         initializeNetwork();
     }
 
+
     // Initialize weights and biases with random values
     private void initializeNetwork() {
         weights = new double[layers.length - 1][][];
@@ -84,5 +85,9 @@ public class NeuralNetwork {
 
     public double[][][] getWeights() {
         return weights;
+    }
+
+    public void setWeights(double[][][] weights) {
+        this.weights = weights;
     }
 }

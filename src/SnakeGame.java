@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -37,6 +38,10 @@ public class SnakeGame {
         initializeGame();
     }
 
+    public void restartGame() {
+        initializeGame();
+    }
+
     private void initializeGame() {
         snake = new LinkedList<>();
         int startX = width / 2;
@@ -46,10 +51,11 @@ public class SnakeGame {
         snake.add(new int[] { startX, startY });
         snake.add(new int[] { startX, startY + 1 });
         snake.add(new int[] { startX, startY + 2 });
-        direction = Direction.RIGHT;
         spawnFood();
         isGameOver = false;
         score = 0;
+
+        direction = Direction.UP;
     }
 
     private void spawnFood() {
@@ -76,6 +82,7 @@ public class SnakeGame {
 
         double[] output = brain.forward(inputs);
 
+        //System.out.println(Arrays.toString(output));
         // 0 UP
         // 1 DOWN
         // 2 LEFT
@@ -84,6 +91,7 @@ public class SnakeGame {
         int maxIndex = 0;
         double maxValue = output[0];
 
+
         for (int i = 1; i < output.length; i++) {
             if (output[i] > maxValue) {
                 maxValue = output[i];
@@ -91,7 +99,6 @@ public class SnakeGame {
             }
         }
 
-        Direction newDirection = null;
 
         return switch (maxIndex) {
             // UP
@@ -105,14 +112,16 @@ public class SnakeGame {
 
             // RIGHT
             case 3 -> Direction.RIGHT;
-            default -> null;
+            default -> throw new IllegalStateException("Unexpected value: " + maxIndex);
         };
     }
 
     public void update() {
         if (isGameOver) return;
 
-        changeDirection(think());
+        Direction dir = think();
+
+        changeDirection(dir);
 
         // Compute next head position
         int[] currentHead = snake.getFirst();
@@ -131,13 +140,13 @@ public class SnakeGame {
             return;
         }
 
-        fitness += score + 1;
+        fitness++;
 
         // Move the snake
         snake.addFirst(nextHead);
         if (nextHead[0] == food[0] && nextHead[1] == food[1]) {
             score++;
-            fitness += 10;
+            fitness += 100;
             spawnFood(); // Generate new food
         } else {
             snake.removeLast(); // Remove the tail
@@ -180,7 +189,7 @@ public class SnakeGame {
             distance++;
         }
 
-        return distance;
+        return (double) distance / (double) width;
     }
 
     private double getDistanceToBody(int[] head, int dx, int dy) {
@@ -195,12 +204,12 @@ public class SnakeGame {
 
             for (int[] segment : snake) {
                 if (segment[0] == x && segment[1] == y) {
-                    return distance;
+                    return 1.0;
                 }
             }
         }
 
-        return Double.MAX_VALUE; // No body in this direction
+        return 0.0;
     }
 
     private double getDistanceToFood(int[] head, int dx, int dy) {
@@ -214,11 +223,11 @@ public class SnakeGame {
             distance++;
 
             if (x == food[0] && y == food[1]) {
-                return distance;
+                return 1.0;
             }
         }
 
-        return Double.MAX_VALUE; // Food not found in this direction
+        return 0.0;
     }
 
     public boolean isGameOver() {
@@ -227,6 +236,14 @@ public class SnakeGame {
 
     public int getFitness() {
         return fitness;
+    }
+
+    public NeuralNetwork getBrain() {
+        return brain;
+    }
+
+    public void setBrain(NeuralNetwork brain) {
+        this.brain = brain;
     }
 
     public int getScore() {
