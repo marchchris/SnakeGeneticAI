@@ -12,10 +12,25 @@ public class SnakeGame {
     private Direction direction;    // Current direction of movement
     private boolean isGameOver;     // Game over status
     private int score;              // Current score
+    private NeuralNetwork brain;
 
-    public SnakeGame(int width, int height) {
+    private static final int[][] DIRECTIONS = {
+            { 0, -1 },  // N
+            { 1, 0 },   // E
+            { 0, 1 },   // S
+            { -1, 0 },  // W
+            { 1, -1 },  // NE
+            { 1, 1 },   // SE
+            { -1, 1 },  // SW
+            { -1, -1 }  // NW
+    };
+
+
+    public SnakeGame(int width, int height, NeuralNetwork brain) {
         this.width = width;
         this.height = height;
+
+        this.brain = brain;
         initializeGame();
     }
 
@@ -53,6 +68,14 @@ public class SnakeGame {
         }
     }
 
+    private Direction think() {
+        double[] inputs = getSensors();
+
+
+
+
+    }
+
     public void update() {
         if (isGameOver) return;
 
@@ -82,6 +105,83 @@ public class SnakeGame {
         } else {
             snake.removeLast(); // Remove the tail
         }
+    }
+
+    /**
+     * Gets the sensor inputs for the snake's head.
+     * @return A list of 24 doubles representing distances to walls, body, and food in 8 directions.
+     */
+    public double[] getSensors() {
+        double[] sensors = new double[24];
+        int[] head = snake.getFirst();
+
+        for (int i = 0; i < DIRECTIONS.length; i++) {
+            int dx = DIRECTIONS[i][0];
+            int dy = DIRECTIONS[i][1];
+
+            // Wall distance
+            sensors[i * 3] = getDistanceToWall(head, dx, dy);
+
+            // Body distance
+            sensors[i * 3 + 1] = getDistanceToBody(head, dx, dy);
+
+            // Food distance
+            sensors[i * 3 + 2] = getDistanceToFood(head, dx, dy);
+        }
+
+        return sensors;
+    }
+
+    private double getDistanceToWall(int[] head, int dx, int dy) {
+        int x = head[0];
+        int y = head[1];
+        int distance = 0;
+
+        while (x >= 0 && x < width && y >= 0 && y < height) {
+            x += dx;
+            y += dy;
+            distance++;
+        }
+
+        return distance;
+    }
+
+    private double getDistanceToBody(int[] head, int dx, int dy) {
+        int x = head[0];
+        int y = head[1];
+        int distance = 0;
+
+        while (x >= 0 && x < width && y >= 0 && y < height) {
+            x += dx;
+            y += dy;
+            distance++;
+
+            for (int[] segment : snake) {
+                if (segment[0] == x && segment[1] == y) {
+                    return distance;
+                }
+            }
+        }
+
+        return Double.MAX_VALUE; // No body in this direction
+    }
+
+    private double getDistanceToFood(int[] head, int dx, int dy) {
+        int x = head[0];
+        int y = head[1];
+        int distance = 0;
+
+        while (x >= 0 && x < width && y >= 0 && y < height) {
+            x += dx;
+            y += dy;
+            distance++;
+
+            if (x == food[0] && y == food[1]) {
+                return distance;
+            }
+        }
+
+        return Double.MAX_VALUE; // Food not found in this direction
     }
 
     public boolean isGameOver() {

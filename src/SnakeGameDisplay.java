@@ -7,6 +7,7 @@ public class SnakeGameDisplay extends JPanel {
     private final int cellSize = 20;
     private int currentGeneration = 1;
 
+
     public SnakeGameDisplay(SnakeGame game) {
         this.game = game;
         JFrame frame = new JFrame("Snake Game");

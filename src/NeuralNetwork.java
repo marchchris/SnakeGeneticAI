@@ -43,17 +43,32 @@ public class NeuralNetwork {
             double[][] weightMatrix = weights[i];
             double[] layerOutput = MatrixOperations.multiply(new double[][] { currentInput }, weightMatrix)[0];
             layerOutput = addBias(layerOutput, biases[i]);
-            currentInput = applyActivation(layerOutput);
+
+            // Apply activation function (ReLU for hidden layers, Sigmoid for output layer)
+            if (i == weights.length - 1) {
+                currentInput = applySigmoid(layerOutput); // Sigmoid for output layer
+            } else {
+                currentInput = applyReLU(layerOutput); // ReLU for hidden layers
+            }
         }
 
         return currentInput;
     }
 
-    // Apply an activation function (ReLU)
-    private double[] applyActivation(double[] layerOutput) {
+    // Apply ReLU activation function
+    private double[] applyReLU(double[] layerOutput) {
         double[] activatedOutput = new double[layerOutput.length];
         for (int i = 0; i < layerOutput.length; i++) {
             activatedOutput[i] = Math.max(0, layerOutput[i]); // ReLU
+        }
+        return activatedOutput;
+    }
+
+    // Apply Sigmoid activation function
+    private double[] applySigmoid(double[] layerOutput) {
+        double[] activatedOutput = new double[layerOutput.length];
+        for (int i = 0; i < layerOutput.length; i++) {
+            activatedOutput[i] = 1 / (1 + Math.exp(-layerOutput[i])); // Sigmoid
         }
         return activatedOutput;
     }
@@ -66,6 +81,5 @@ public class NeuralNetwork {
         }
         return outputWithBias;
     }
-
 
 }
