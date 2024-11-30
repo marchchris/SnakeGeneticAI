@@ -4,10 +4,10 @@ import java.util.List;
 public class SnakeGameManager {
     private final List<SnakeGame> games;
 
-    public SnakeGameManager(int gameCount, int width, int height) {
+    public SnakeGameManager(int gameCount, int width, int height, NeuralNetwork[] brains) {
         games = new ArrayList<>();
         for (int i = 0; i < gameCount; i++) {
-            games.add(new SnakeGame(width, height));
+            games.add(new SnakeGame(width, height, brains[i]));
         }
     }
 

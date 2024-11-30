@@ -14,6 +14,8 @@ public class SnakeGame {
     private int score;              // Current score
     private NeuralNetwork brain;
 
+    private int fitness;
+
     private static final int[][] DIRECTIONS = {
             { 0, -1 },  // N
             { 1, 0 },   // E
@@ -29,6 +31,7 @@ public class SnakeGame {
     public SnakeGame(int width, int height, NeuralNetwork brain) {
         this.width = width;
         this.height = height;
+        this.fitness = 0;
 
         this.brain = brain;
         initializeGame();
@@ -71,14 +74,45 @@ public class SnakeGame {
     private Direction think() {
         double[] inputs = getSensors();
 
+        double[] output = brain.forward(inputs);
 
+        // 0 UP
+        // 1 DOWN
+        // 2 LEFT
+        // 3 RIGHT
 
+        int maxIndex = 0;
+        double maxValue = output[0];
 
+        for (int i = 1; i < output.length; i++) {
+            if (output[i] > maxValue) {
+                maxValue = output[i];
+                maxIndex = i;
+            }
+        }
+
+        Direction newDirection = null;
+
+        return switch (maxIndex) {
+            // UP
+            case 0 -> Direction.UP;
+
+            // Down
+            case 1 -> Direction.DOWN;
+
+            // LEFT
+            case 2 -> Direction.LEFT;
+
+            // RIGHT
+            case 3 -> Direction.RIGHT;
+            default -> null;
+        };
     }
 
     public void update() {
         if (isGameOver) return;
 
+        changeDirection(think());
 
         // Compute next head position
         int[] currentHead = snake.getFirst();
@@ -97,10 +131,13 @@ public class SnakeGame {
             return;
         }
 
+        fitness += score + 1;
+
         // Move the snake
         snake.addFirst(nextHead);
         if (nextHead[0] == food[0] && nextHead[1] == food[1]) {
             score++;
+            fitness += 10;
             spawnFood(); // Generate new food
         } else {
             snake.removeLast(); // Remove the tail
@@ -186,6 +223,10 @@ public class SnakeGame {
 
     public boolean isGameOver() {
         return isGameOver;
+    }
+
+    public int getFitness() {
+        return fitness;
     }
 
     public int getScore() {

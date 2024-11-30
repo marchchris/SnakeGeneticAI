@@ -38,14 +38,17 @@ public class MatrixOperations {
         return result;
     }
 
-    // Utility method to print a matrix
-    public static void printMatrix(double[][] matrix) {
-        for (double[] row : matrix) {
-            for (double value : row) {
-                System.out.printf("%10.4f", value);
+    public static double[][] multiplyByScalar(double[][] matrix, double scalar) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        double[][] result = new double[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[i][j] = matrix[i][j] * scalar;
             }
-            System.out.println();
         }
+        return result;
     }
 
 }

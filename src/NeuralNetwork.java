@@ -82,4 +82,7 @@ public class NeuralNetwork {
         return outputWithBias;
     }
 
+    public double[][][] getWeights() {
+        return weights;
+    }
 }
