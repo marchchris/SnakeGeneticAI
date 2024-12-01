@@ -14,10 +14,11 @@ public class SnakeGame {
     private boolean isGameOver;     // Game over status
     private int score;              // Current score
     private NeuralNetwork brain;
+    private int movesLeft;
 
-    private int fitness;
+    private double fitness;
 
-    private static final int[][] DIRECTIONS = {
+    public static final int[][] DIRECTIONS = {
             { 0, -1 },  // N
             { 1, 0 },   // E
             { 0, 1 },   // S
@@ -32,7 +33,6 @@ public class SnakeGame {
     public SnakeGame(int width, int height, NeuralNetwork brain) {
         this.width = width;
         this.height = height;
-        this.fitness = 0;
 
         this.brain = brain;
         initializeGame();
@@ -54,8 +54,9 @@ public class SnakeGame {
         spawnFood();
         isGameOver = false;
         score = 0;
-
+        movesLeft = 200;
         direction = Direction.UP;
+        fitness = 1.0;
     }
 
     private void spawnFood() {
@@ -73,6 +74,8 @@ public class SnakeGame {
                 (direction == Direction.DOWN && newDirection != Direction.UP) ||
                 (direction == Direction.LEFT && newDirection != Direction.RIGHT) ||
                 (direction == Direction.RIGHT && newDirection != Direction.LEFT)) {
+
+            movesLeft--;
             direction = newDirection;
         }
     }
@@ -116,12 +119,18 @@ public class SnakeGame {
         };
     }
 
+
+
     public void update() {
+        if (movesLeft <= 0) {
+            isGameOver = true;
+        }
+
         if (isGameOver) return;
 
-        Direction dir = think();
 
-        changeDirection(dir);
+
+        changeDirection(think());
 
         // Compute next head position
         int[] currentHead = snake.getFirst();
@@ -140,13 +149,14 @@ public class SnakeGame {
             return;
         }
 
-        fitness++;
+        this.fitness++;
+        movesLeft--;
 
         // Move the snake
         snake.addFirst(nextHead);
         if (nextHead[0] == food[0] && nextHead[1] == food[1]) {
             score++;
-            fitness += 100;
+            movesLeft += 100;
             spawnFood(); // Generate new food
         } else {
             snake.removeLast(); // Remove the tail
@@ -158,25 +168,50 @@ public class SnakeGame {
      * @return A list of 24 doubles representing distances to walls, body, and food in 8 directions.
      */
     public double[] getSensors() {
-        double[] sensors = new double[24];
+        // Total sensors: 24 (distances) + 4 (one-hot direction) = 28
+        double[] sensors = new double[28];
         int[] head = snake.getFirst();
 
+        // Compute distances to walls, food, and body
         for (int i = 0; i < DIRECTIONS.length; i++) {
             int dx = DIRECTIONS[i][0];
             int dy = DIRECTIONS[i][1];
 
-            // Wall distance
-            sensors[i * 3] = getDistanceToWall(head, dx, dy);
+            sensors[i] = getDistanceToWall(head, dx, dy);
+            sensors[i + (DIRECTIONS.length)] = getDistanceToFood(head, dx, dy);
+            sensors[i + (DIRECTIONS.length) * 2] = getDistanceToBody(head, dx, dy);
+        }
 
-            // Body distance
-            sensors[i * 3 + 1] = getDistanceToBody(head, dx, dy);
-
-            // Food distance
-            sensors[i * 3 + 2] = getDistanceToFood(head, dx, dy);
+        switch (direction) {
+            case UP -> {
+                sensors[24] = 1.0; // UP
+                sensors[25] = 0.0; // DOWN
+                sensors[26] = 0.0; // LEFT
+                sensors[27] = 0.0; // RIGHT
+            }
+            case DOWN -> {
+                sensors[24] = 0.0; // UP
+                sensors[25] = 1.0; // DOWN
+                sensors[26] = 0.0; // LEFT
+                sensors[27] = 0.0; // RIGHT
+            }
+            case LEFT -> {
+                sensors[24] = 0.0; // UP
+                sensors[25] = 0.0; // DOWN
+                sensors[26] = 1.0; // LEFT
+                sensors[27] = 0.0; // RIGHT
+            }
+            case RIGHT -> {
+                sensors[24] = 0.0; // UP
+                sensors[25] = 0.0; // DOWN
+                sensors[26] = 0.0; // LEFT
+                sensors[27] = 1.0; // RIGHT
+            }
         }
 
         return sensors;
     }
+
 
     private double getDistanceToWall(int[] head, int dx, int dy) {
         int x = head[0];
@@ -234,7 +269,7 @@ public class SnakeGame {
         return isGameOver;
     }
 
-    public int getFitness() {
+    public double getFitness() {
         return fitness;
     }
 

@@ -6,10 +6,12 @@ public class NeuralNetwork {
     private double[][][] weights;           // Weights for each layer
     private double[][] biases;              // Biases for each layer
     private final Random random = new Random();
+    private int[] structure;
 
     // Constructor to initialize the neural network structure
     public NeuralNetwork(int[] layers) {
         this.layers = layers;
+        this.structure = layers;
         initializeNetwork();
     }
 
@@ -26,12 +28,12 @@ public class NeuralNetwork {
 
             for (int j = 0; j < layers[i]; j++) {
                 for (int k = 0; k < layers[i + 1]; k++) {
-                    weights[i][j][k] = random.nextGaussian(); // Random normal distribution
+                    weights[i][j][k] = Math.random() * 2.0 - 1.0;
                 }
             }
 
             for (int j = 0; j < layers[i + 1]; j++) {
-                biases[i][j] = random.nextGaussian(); // Random normal distribution
+                biases[i][j] = Math.random() * 2.0 - 1.0;
             }
         }
     }
@@ -45,12 +47,13 @@ public class NeuralNetwork {
             double[] layerOutput = MatrixOperations.multiply(new double[][] { currentInput }, weightMatrix)[0];
             layerOutput = addBias(layerOutput, biases[i]);
 
-            // Apply activation function (ReLU for hidden layers, Sigmoid for output layer)
+//             Apply activation function (ReLU for hidden layers, Sigmoid for output layer)
             if (i == weights.length - 1) {
                 currentInput = applySigmoid(layerOutput); // Sigmoid for output layer
             } else {
                 currentInput = applyReLU(layerOutput); // ReLU for hidden layers
             }
+
         }
 
         return currentInput;
@@ -87,7 +90,19 @@ public class NeuralNetwork {
         return weights;
     }
 
+    public double[][] getBiases() {
+        return biases;
+    }
+
+    public void setBiases(double[][] biases) {
+        this.biases = biases;
+    }
+
     public void setWeights(double[][][] weights) {
         this.weights = weights;
+    }
+
+    public int[] getStructure() {
+        return structure;
     }
 }

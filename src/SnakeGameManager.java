@@ -8,7 +8,7 @@ public class SnakeGameManager {
         NeuralNetwork[] brains = new NeuralNetwork[gameCount];
 
         for (int i = 0; i < gameCount; i++) {
-            brains[i] = new NeuralNetwork(new int[] {24,16,12,4});
+            brains[i] = new NeuralNetwork(new int[] {28,16,16,4});
         }
 
         games = new ArrayList<>();
@@ -25,6 +25,17 @@ public class SnakeGameManager {
             }
         }
     }
+
+    public int getActiveGameCount() {
+        int activeGameCount = 0;
+        for (SnakeGame game : games) {
+            if (!game.isGameOver()) {
+                activeGameCount++;
+            }
+        }
+        return activeGameCount;
+    }
+
 
     public void restartGames() {
         for (int i = 0; i < games.size(); i++) {
