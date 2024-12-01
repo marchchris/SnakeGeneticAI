@@ -54,9 +54,9 @@ public class SnakeGame {
         spawnFood();
         isGameOver = false;
         score = 0;
-        movesLeft = 200;
+        movesLeft = 500;
         direction = Direction.UP;
-        fitness = 1.0;
+        fitness = 0.0;
     }
 
     private void spawnFood() {

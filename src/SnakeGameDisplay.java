@@ -91,6 +91,7 @@ public class SnakeGameDisplay extends JPanel {
 
             g.drawLine(headPosition[0], headPosition[1], endX, endY);
 
+            g.setColor(new Color((int) (sensors[i] * 255.0), (int) (sensors[i] * 255.0), (int) (sensors[i] * 255.0)));
             g.fillOval(endX - 3, endY - 3, 6, 6);
 
         }
