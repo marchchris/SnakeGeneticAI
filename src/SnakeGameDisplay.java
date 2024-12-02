@@ -9,6 +9,9 @@ public class SnakeGameDisplay extends JPanel {
     private int currentActiveGames = 0;
     private double prevTopFitness = 0.0;
 
+    public Color red = new Color(255, 0, 0, 128);
+    public Color green = new Color(0, 255, 0, 128);
+    public Color white = new Color(255, 255, 255, 128);
 
     public SnakeGameDisplay(SnakeGame game) {
         this.game = game;
@@ -21,6 +24,8 @@ public class SnakeGameDisplay extends JPanel {
 
     public void setGame(SnakeGame newGame) {
         this.game = newGame;
+        this.currentGeneration = newGame.getSnakeGeneration();
+        this.prevTopFitness = newGame.getFitness();
     }
 
     public void updateActiveGames(int activeGames) {
@@ -53,10 +58,12 @@ public class SnakeGameDisplay extends JPanel {
 
         // Draw HUD
         g.setColor(Color.WHITE);
-        g.drawString("Score: " + game.getScore(), cellSize * game.getWidth() + 20, 20);
-        g.drawString("Current Generation: " + currentGeneration, cellSize * game.getWidth() + 20, 40);
-        g.drawString("Active Agents: " + currentActiveGames, cellSize * game.getWidth() + 20, 60);
-        g.drawString("Last Generation Top Fitness: " + prevTopFitness, cellSize * game.getWidth() + 20, 80);
+        g.drawString("Current Score: " + game.getScore(), cellSize * game.getWidth() + 20, 20);
+        g.drawString("Current Displayed Generation: " + game.getSnakeGeneration(), cellSize * game.getWidth() + 20, 40);
+        g.drawString("Current Generation Top Score: " + game.getReplayScore(), cellSize * game.getWidth() + 20, 60);
+        g.drawString("Generations Top Fitness: " + game.getReplayFitness(), cellSize * game.getWidth() + 20, 80);
+        g.drawString("Active Agents: " + currentActiveGames, cellSize * game.getWidth() + 20, 100);
+
     }
 
     /**
@@ -84,11 +91,11 @@ public class SnakeGameDisplay extends JPanel {
 
 //             Set color based on sensor detection
             if (detectsFood) {
-                g.setColor(Color.RED);
+                g.setColor(red);
             } else if (detectsBody) {
-                g.setColor(Color.GREEN);
+                g.setColor(green);
             } else {
-                g.setColor(Color.WHITE);
+                g.setColor(white);
             }
 
 //            if (detectsBody) {

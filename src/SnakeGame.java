@@ -1,9 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
-public class SnakeGame {
+public class SnakeGame implements Cloneable {
     public enum Direction { UP, DOWN, LEFT, RIGHT }
 
     private final int width;
@@ -19,6 +16,16 @@ public class SnakeGame {
     private int stepsBetweenApples;
 
     private double fitness;
+
+    private double replayFitness = 0.0;
+    private int replayScore = 0;
+
+    private int snakeGeneration = 0;
+
+    private boolean isReplay;
+
+    private LinkedList<int[]> foodHistory;
+
 
     public static final int[][] DIRECTIONS = {
             { 0, -1 },  // N
@@ -36,17 +43,20 @@ public class SnakeGame {
         this.width = width;
         this.height = height;
 
+        this.foodHistory = new LinkedList<>();
+
         this.brain = brain;
         initializeGame();
     }
 
-    public void restartGame() {
-        initializeGame();
-    }
+    public void replayGame() {
+        isReplay = true;
 
-    private void initializeGame() {
-        Random rand = new Random();
+        replayScore = score;
+        replayFitness = fitness;
+
         snake = new LinkedList<>();
+
         int startX = width / 2;
         int startY = height / 2;
 
@@ -56,6 +66,9 @@ public class SnakeGame {
         for (int i = 0; i < 6; i++) {
             snake.add(new int[] { startX, startY + i });
         }
+
+
+
         spawnFood();
         isGameOver = false;
         score = 0;
@@ -65,16 +78,67 @@ public class SnakeGame {
 
         totalSteps = 0;
         stepsBetweenApples = 0;
+
+    }
+
+    public void restartGame() {
+        initializeGame();
+    }
+
+    private void initializeGame() {
+        snake = new LinkedList<>();
+        foodHistory = new LinkedList<>();
+
+        isReplay = false;
+
+        int startX = width / 2;
+        int startY = height / 2;
+
+        // Initialize snake with length 3, moving upward by default
+        snake.add(new int[] { startX, startY });
+
+        for (int i = 0; i < 6; i++) {
+            snake.add(new int[] { startX, startY + i });
+        }
+
+
+
+        spawnFood();
+        isGameOver = false;
+        score = 0;
+        replayScore = 0;
+        movesLeft = 200;
+        direction = Direction.UP;
+        fitness = 0.0;
+
+        totalSteps = 0;
+        stepsBetweenApples = 0;
+
     }
 
     private void spawnFood() {
-        Random rand = new Random();
-        while (true) {
-            food = new int[] { rand.nextInt(width), rand.nextInt(height) };
-            boolean onSnake = snake.stream().anyMatch(segment -> segment[0] == food[0] && segment[1] == food[1]);
-            if (!onSnake) break;
+        if (isReplay) {
+            // If it's a replay, take the food from the history and remove the first element
+            food = foodHistory.removeFirst();
+        } else {
+            Random rand = new Random();
+            while (true) {
+                // Generate a random food position
+                food = new int[] { rand.nextInt(width), rand.nextInt(height) };
+
+                // Ensure the food does not spawn on the snake
+                boolean onSnake = snake.stream().anyMatch(segment -> segment[0] == food[0] && segment[1] == food[1]);
+                if (!onSnake) {
+                    break;  // Food is valid, exit the loop
+                }
+            }
+
+            // Add the new food position to the history
+            foodHistory.addLast(food);
+
         }
     }
+
 
     public void changeDirection(Direction newDirection) {
         // Prevent reversing direction
@@ -154,11 +218,15 @@ public class SnakeGame {
         if (nextHead[0] < 0 || nextHead[0] >= width || nextHead[1] < 0 || nextHead[1] >= height ||
                 snake.stream().anyMatch(segment -> segment[0] == nextHead[0] && segment[1] == nextHead[1])) {
             isGameOver = true;
+
+            calculateFitness();
+
             return;
         }
 
         movesLeft--;
         totalSteps++;
+        //this.fitness++;
 
 
         // Move the snake
@@ -300,20 +368,23 @@ public class SnakeGame {
         return isGameOver;
     }
 
+    public void calculateFitness() {
+
+        double computedFitness = totalSteps * (score + 1);
+        this.fitness = computedFitness;
+    }
+
     public double getFitness() {
-        // First term
-        double term1 = stepsBetweenApples;
 
-        // Second term
-        double term2 = Math.pow(2, score) + Math.pow(stepsBetweenApples, 2.1) * 500;
 
-        // Third term
-        double term3 = Math.pow(score, 1.2) * Math.pow(0.25 * stepsBetweenApples, 1.3);
 
-        // Complete function
-        return term1 + term2 - term3;
+        return fitness;
 
-//        return totalSteps;
+        //return fitness;
+    }
+
+    public double getReplayFitness() {
+        return replayFitness;
     }
 
     public NeuralNetwork getBrain() {
@@ -343,5 +414,27 @@ public class SnakeGame {
 
     public int getHeight() {
         return height;
+    }
+
+    public LinkedList<int[]> getFoodHistory() {
+        return foodHistory;
+    }
+
+    public int getSnakeGeneration() {
+        return snakeGeneration;
+    }
+
+    public void setSnakeGeneration(int snakeGeneration) {
+        this.snakeGeneration = snakeGeneration;
+
+    }
+
+    public int getReplayScore() {
+        return replayScore;
+    }
+
+    @Override
+    public SnakeGame clone() throws CloneNotSupportedException {
+        return (SnakeGame) super.clone();
     }
 }

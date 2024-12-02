@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Main {
     public static double mutateWeight(double weight) {
@@ -99,44 +96,72 @@ public class Main {
         return childNetwork;
     }
 
-
-
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, CloneNotSupportedException {
 
         int gameCount = 1000;
         double mutationRate = 0.1;
-        int generation = 0;
+
+        SnakeGame topFitnessSnake = null;
+
 
         SnakeGameManager manager = new SnakeGameManager(gameCount, 20, 20);
-        SnakeGame singleGame = manager.getGames().getFirst();
-        SnakeGameDisplay displayer = new SnakeGameDisplay(singleGame);
+//        SnakeGame singleGame = manager.getGames().getFirst();
+//        SnakeGameDisplay displayer = new SnakeGameDisplay(singleGame);
+
+        SnakeGameDisplay displayer = null;
 
         while (true) {
-            while (manager.getGames().stream().anyMatch(game -> !game.isGameOver())) {
-                // Check if the current displayed game is over
-                if (singleGame.isGameOver()) {
-                    // Find a new game that is not over
-                    for (SnakeGame game : manager.getGames()) {
-                        if (!game.isGameOver()) {
-                            singleGame = game;
-                            displayer.setGame(singleGame); // Update the display with the new game
-                            break;
-                        }
+
+            if (manager.getCurrentGeneration() == 1) {
+                displayer = new SnakeGameDisplay(topFitnessSnake);
+            }
+
+            if (topFitnessSnake != null) {
+
+                topFitnessSnake.replayGame();
+                displayer.setGame(topFitnessSnake);
+
+            }
+
+
+
+            System.out.println("Running Generation: " + manager.getCurrentGeneration());
+
+
+            if (manager.getCurrentGeneration() > 0) {
+                while (manager.getGames().stream().anyMatch(game -> !game.isGameOver()) || !topFitnessSnake.isGameOver()) {
+                    // Update games and refresh the display
+                    manager.updateGames();
+                    int activeGames = manager.getActiveGameCount();
+
+
+                    topFitnessSnake.update();
+                    displayer.updateActiveGames(activeGames);
+                    displayer.refresh();
+
+
+
+                    if (manager.getCurrentGeneration() < 200) {
+                        Thread.sleep(1); // Simulate step time
+                    } else {
+                        Thread.sleep(100);
                     }
                 }
+            } else {
+                while (manager.getGames().stream().anyMatch(game -> !game.isGameOver())) {
+                    // Update games and refresh the display
+                    manager.updateGames();
+                    int activeGames = manager.getActiveGameCount();
 
-                // Update games and refresh the display
-                manager.updateGames();
-                int activeGames = manager.getActiveGameCount();
-                displayer.updateActiveGames(activeGames);
-                displayer.refresh();
 
-                if (generation < 300) {
-                    Thread.sleep(1); // Simulate step time
-                } else {
-                    Thread.sleep(100);
+                    if (manager.getCurrentGeneration() < 200) {
+                        Thread.sleep(1); // Simulate step time
+                    } else {
+                        Thread.sleep(100);
+                    }
                 }
             }
+
 
             List<SnakeGame> allSnakes = manager.getGames();
             allSnakes.sort(Comparator.comparingDouble(SnakeGame::getFitness));
@@ -175,13 +200,16 @@ public class Main {
                 double fitness = snake.getFitness();
                 if (fitness > topFit) {
                     topFit = fitness;
+                    topFitnessSnake = snake.clone();
                 }
             }
 
+
+
+
             manager.setNewBrains(nextGenerationNetworks);
             manager.restartGames();
-            displayer.updatePrevTopFitness(topFit);
-            displayer.updateGeneration(++generation);
+
         }
     }
 }

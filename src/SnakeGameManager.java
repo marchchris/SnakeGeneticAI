@@ -3,6 +3,7 @@ import java.util.List;
 
 public class SnakeGameManager {
     private final List<SnakeGame> games;
+    private int currentGeneration = 0;
 
     public SnakeGameManager(int gameCount, int width, int height) {
         NeuralNetwork[] brains = new NeuralNetwork[gameCount];
@@ -38,8 +39,12 @@ public class SnakeGameManager {
 
 
     public void restartGames() {
-        for (int i = 0; i < games.size(); i++) {
-            games.get(i).restartGame();
+        currentGeneration++;
+
+
+        for (SnakeGame game : games) {
+            game.setSnakeGeneration(currentGeneration);
+            game.restartGame();
         }
 
 
@@ -53,5 +58,9 @@ public class SnakeGameManager {
 
     public List<SnakeGame> getGames() {
         return games;
+    }
+
+    public int getCurrentGeneration() {
+        return currentGeneration;
     }
 }
