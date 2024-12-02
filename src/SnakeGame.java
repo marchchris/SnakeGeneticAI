@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class SnakeGame {
     public enum Direction { UP, DOWN, LEFT, RIGHT }
@@ -14,11 +17,6 @@ public class SnakeGame {
     private int movesLeft;
     private int totalSteps;
     private int stepsBetweenApples;
-
-    private int snakesGeneration = 0;
-
-    private List<int[]> foodRecord;
-    private List<int[]> foodHistory;
 
     private double fitness;
 
@@ -39,17 +37,6 @@ public class SnakeGame {
         this.height = height;
 
         this.brain = brain;
-        initializeGame();
-    }
-
-    public SnakeGame(int width, int height, NeuralNetwork brain, List<int[]> foodHistory) {
-        this.width = width;
-        this.height = height;
-
-        this.brain = brain;
-
-        this.foodHistory = foodHistory;
-
         initializeGame();
     }
 
@@ -81,21 +68,12 @@ public class SnakeGame {
     }
 
     private void spawnFood() {
-
-        if (!foodHistory.isEmpty()) {
-            food = foodHistory.removeFirst();
-        } else {
-            Random rand = new Random();
-            while (true) {
-                food = new int[] { rand.nextInt(width), rand.nextInt(height) };
-                boolean onSnake = snake.stream().anyMatch(segment -> segment[0] == food[0] && segment[1] == food[1]);
-                if (!onSnake) break;
-            }
-
-            foodRecord.add(new int[] { food[0], food[1] });
+        Random rand = new Random();
+        while (true) {
+            food = new int[] { rand.nextInt(width), rand.nextInt(height) };
+            boolean onSnake = snake.stream().anyMatch(segment -> segment[0] == food[0] && segment[1] == food[1]);
+            if (!onSnake) break;
         }
-
-
     }
 
     public void changeDirection(Direction newDirection) {
@@ -176,9 +154,6 @@ public class SnakeGame {
         if (nextHead[0] < 0 || nextHead[0] >= width || nextHead[1] < 0 || nextHead[1] >= height ||
                 snake.stream().anyMatch(segment -> segment[0] == nextHead[0] && segment[1] == nextHead[1])) {
             isGameOver = true;
-
-            foodHistory.addAll(foodRecord);
-
             return;
         }
 
