@@ -5,9 +5,7 @@ import java.util.Random;
 
 public class Main {
     public static double mutateWeight(double weight) {
-        Random rand = new Random();
-        double mutationFactor = 1 + (rand.nextDouble() * 0.2 - 0.1); // This gives a value between 0.9 and 1.1
-        return weight * mutationFactor;
+        return weight + (Math.random() * 2.0 - 1.0);
     }
 
     public static SnakeGame selectParent(List<SnakeGame> topSnakes) {
@@ -67,6 +65,7 @@ public class Main {
                     // Apply mutation with the given probability
                     if (Math.random() <= mutationRate) {
                         newWeights[i][j][k] = mutateWeight(newWeights[i][j][k]);
+                        //newWeights[i][j][k] = Math.random() * 2.0 - 1.0;
                     }
                 }
             }
@@ -85,14 +84,17 @@ public class Main {
                 // Apply mutation with the given probability
                 if (Math.random() <= mutationRate) {
                     newBiases[i][j] = mutateWeight(newBiases[i][j]);
+                    //newBiases[i][j] = Math.random() * 2.0 - 1.0;
                 }
             }
         }
 
         // Create a new child network and set the weights and biases
-        NeuralNetwork childNetwork = new NeuralNetwork(network1.getStructure());
-        childNetwork.setWeights(newWeights);
-        childNetwork.setBiases(newBiases);
+//        NeuralNetwork childNetwork = new NeuralNetwork(network1.getStructure());
+//        childNetwork.setWeights(newWeights);
+//        childNetwork.setBiases(newBiases);
+
+        NeuralNetwork childNetwork = new NeuralNetwork(network1.getStructure(), newWeights, newBiases);
 
         return childNetwork;
     }
@@ -101,8 +103,8 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int gameCount = 500;
-        double mutationRate = 0.05;
+        int gameCount = 1000;
+        double mutationRate = 0.1;
         int generation = 0;
 
         SnakeGameManager manager = new SnakeGameManager(gameCount, 20, 20);
@@ -129,20 +131,25 @@ public class Main {
                 displayer.updateActiveGames(activeGames);
                 displayer.refresh();
 
-                Thread.sleep(100); // Simulate step time
+                if (generation < 300) {
+                    Thread.sleep(1); // Simulate step time
+                } else {
+                    Thread.sleep(100);
+                }
             }
 
             List<SnakeGame> allSnakes = manager.getGames();
             allSnakes.sort(Comparator.comparingDouble(SnakeGame::getFitness));
 
-            // Get the top 16 snakes
-            List<SnakeGame> topSnakes = allSnakes.subList(Math.max(allSnakes.size() - 5, 0), allSnakes.size());
+            int elitePick = 100;
+
+            List<SnakeGame> topSnakes = allSnakes.subList(Math.max(allSnakes.size() - elitePick, 0), allSnakes.size());
             //List<SnakeGame> topSnakes = allSnakes;
 
             NeuralNetwork[] nextGenerationNetworks = new NeuralNetwork[gameCount];
 
             // Fitness-proportional selection for breeding
-            for (int i = 0; i < gameCount; i++) {
+            for (int i = 0; i < gameCount - elitePick; i++) {
                 SnakeGame parent1 = selectParent(topSnakes);
                 SnakeGame parent2 = selectParent(topSnakes);
 
@@ -152,6 +159,11 @@ public class Main {
                 }
 
                 nextGenerationNetworks[i] = crossOverNetworks(parent1.getBrain(), parent2.getBrain(), mutationRate);
+            }
+
+
+            for (int i = 0; i < topSnakes.size(); i++) {
+                nextGenerationNetworks[i + (gameCount - elitePick)] = topSnakes.get(i).getBrain();
             }
 
 

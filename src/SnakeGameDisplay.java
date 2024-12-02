@@ -72,7 +72,7 @@ public class SnakeGameDisplay extends JPanel {
             int dx = SnakeGame.DIRECTIONS[i][0];
             int dy = SnakeGame.DIRECTIONS[i][1];
 
-            int distanceToWall = (int) (sensors[i] * game.getWidth());
+            int distanceToWall = (int) (sensors[i] * cellSize);
 
             int endX = (headPosition[0] + dx * distanceToWall * cellSize) - (dx * (cellSize / 2)) ;
             int endY = (headPosition[1] + dy * distanceToWall * cellSize) - (dy * (cellSize / 2));
@@ -80,7 +80,9 @@ public class SnakeGameDisplay extends JPanel {
             boolean detectsFood = sensors[i + (SnakeGame.DIRECTIONS.length)] > 0;
             boolean detectsBody = sensors[i + (SnakeGame.DIRECTIONS.length) * 2] > 0;
 
-            // Set color based on sensor detection
+//            boolean detectsBody = sensors[i + (SnakeGame.DIRECTIONS.length)] > 0;
+
+//             Set color based on sensor detection
             if (detectsFood) {
                 g.setColor(Color.RED);
             } else if (detectsBody) {
@@ -89,9 +91,15 @@ public class SnakeGameDisplay extends JPanel {
                 g.setColor(Color.WHITE);
             }
 
+//            if (detectsBody) {
+//                g.setColor(Color.GREEN);
+//            } else {
+//                g.setColor(Color.WHITE);
+//            }
+
             g.drawLine(headPosition[0], headPosition[1], endX, endY);
 
-            g.setColor(new Color((int) (sensors[i] * 255.0), (int) (sensors[i] * 255.0), (int) (sensors[i] * 255.0)));
+            g.setColor(new Color((int) ((sensors[i]) * 255.0), (int) ((sensors[i]) * 255.0), (int) ((sensors[i]) * 255.0)));
             g.fillOval(endX - 3, endY - 3, 6, 6);
 
         }

@@ -2,18 +2,24 @@ import java.util.Random;
 
 public class NeuralNetwork {
 
-    private final int[] layers;              // Structure of the network
+    private int[] layers;              // Structure of the network
     private double[][][] weights;           // Weights for each layer
     private double[][] biases;              // Biases for each layer
     private final Random random = new Random();
-    private int[] structure;
 
     // Constructor to initialize the neural network structure
     public NeuralNetwork(int[] layers) {
         this.layers = layers;
-        this.structure = layers;
         initializeNetwork();
     }
+
+    public NeuralNetwork(int[] layers, double[][][] weights, double[][] biases) {
+        this.layers = layers;
+        this.weights = weights;
+        this.biases = biases;
+
+    }
+
 
 
     // Initialize weights and biases with random values
@@ -87,22 +93,22 @@ public class NeuralNetwork {
     }
 
     public double[][][] getWeights() {
-        return weights;
+        return weights.clone();
     }
 
     public double[][] getBiases() {
-        return biases;
+        return biases.clone();
     }
 
     public void setBiases(double[][] biases) {
-        this.biases = biases;
+        this.biases = biases.clone();
     }
 
     public void setWeights(double[][][] weights) {
-        this.weights = weights;
+        this.weights = weights.clone();
     }
 
     public int[] getStructure() {
-        return structure;
+        return layers;
     }
 }

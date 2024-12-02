@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class SnakeGame {
     public enum Direction { UP, DOWN, LEFT, RIGHT }
@@ -15,6 +12,13 @@ public class SnakeGame {
     private int score;              // Current score
     private NeuralNetwork brain;
     private int movesLeft;
+    private int totalSteps;
+    private int stepsBetweenApples;
+
+    private int snakesGeneration = 0;
+
+    private List<int[]> foodRecord;
+    private List<int[]> foodHistory;
 
     private double fitness;
 
@@ -38,34 +42,60 @@ public class SnakeGame {
         initializeGame();
     }
 
+    public SnakeGame(int width, int height, NeuralNetwork brain, List<int[]> foodHistory) {
+        this.width = width;
+        this.height = height;
+
+        this.brain = brain;
+
+        this.foodHistory = foodHistory;
+
+        initializeGame();
+    }
+
     public void restartGame() {
         initializeGame();
     }
 
     private void initializeGame() {
+        Random rand = new Random();
         snake = new LinkedList<>();
         int startX = width / 2;
         int startY = height / 2;
 
         // Initialize snake with length 3, moving upward by default
         snake.add(new int[] { startX, startY });
-        snake.add(new int[] { startX, startY + 1 });
-        snake.add(new int[] { startX, startY + 2 });
+
+        for (int i = 0; i < 6; i++) {
+            snake.add(new int[] { startX, startY + i });
+        }
         spawnFood();
         isGameOver = false;
         score = 0;
-        movesLeft = 500;
+        movesLeft = 200;
         direction = Direction.UP;
         fitness = 0.0;
+
+        totalSteps = 0;
+        stepsBetweenApples = 0;
     }
 
     private void spawnFood() {
-        Random rand = new Random();
-        while (true) {
-            food = new int[] { rand.nextInt(width), rand.nextInt(height) };
-            boolean onSnake = snake.stream().anyMatch(segment -> segment[0] == food[0] && segment[1] == food[1]);
-            if (!onSnake) break;
+
+        if (!foodHistory.isEmpty()) {
+            food = foodHistory.removeFirst();
+        } else {
+            Random rand = new Random();
+            while (true) {
+                food = new int[] { rand.nextInt(width), rand.nextInt(height) };
+                boolean onSnake = snake.stream().anyMatch(segment -> segment[0] == food[0] && segment[1] == food[1]);
+                if (!onSnake) break;
+            }
+
+            foodRecord.add(new int[] { food[0], food[1] });
         }
+
+
     }
 
     public void changeDirection(Direction newDirection) {
@@ -75,7 +105,6 @@ public class SnakeGame {
                 (direction == Direction.LEFT && newDirection != Direction.RIGHT) ||
                 (direction == Direction.RIGHT && newDirection != Direction.LEFT)) {
 
-            movesLeft--;
             direction = newDirection;
         }
     }
@@ -121,6 +150,7 @@ public class SnakeGame {
 
 
 
+
     public void update() {
         if (movesLeft <= 0) {
             isGameOver = true;
@@ -146,20 +176,37 @@ public class SnakeGame {
         if (nextHead[0] < 0 || nextHead[0] >= width || nextHead[1] < 0 || nextHead[1] >= height ||
                 snake.stream().anyMatch(segment -> segment[0] == nextHead[0] && segment[1] == nextHead[1])) {
             isGameOver = true;
+
+            foodHistory.addAll(foodRecord);
+
             return;
         }
 
-        this.fitness++;
         movesLeft--;
+        totalSteps++;
+
 
         // Move the snake
         snake.addFirst(nextHead);
         if (nextHead[0] == food[0] && nextHead[1] == food[1]) {
             score++;
             movesLeft += 100;
+            stepsBetweenApples = 0;
             spawnFood(); // Generate new food
         } else {
             snake.removeLast(); // Remove the tail
+            stepsBetweenApples++;
+//
+//            double distanceToFood = getEuclideanDistanceToFood(nextHead);
+//            if (distanceToFood <= previousDistanceToFood) {
+//                this.fitness++;
+//            } else {
+//                this.fitness -= 1.5;
+//            }
+//
+//            previousDistanceToFood = distanceToFood;
+
+            //this.fitness++;
         }
     }
 
@@ -168,7 +215,6 @@ public class SnakeGame {
      * @return A list of 24 doubles representing distances to walls, body, and food in 8 directions.
      */
     public double[] getSensors() {
-        // Total sensors: 24 (distances) + 4 (one-hot direction) = 28
         double[] sensors = new double[28];
         int[] head = snake.getFirst();
 
@@ -178,9 +224,16 @@ public class SnakeGame {
             int dy = DIRECTIONS[i][1];
 
             sensors[i] = getDistanceToWall(head, dx, dy);
+//            sensors[i + (DIRECTIONS.length)] = getDistanceToBody(head, dx, dy);
+
             sensors[i + (DIRECTIONS.length)] = getDistanceToFood(head, dx, dy);
             sensors[i + (DIRECTIONS.length) * 2] = getDistanceToBody(head, dx, dy);
+
+//            sensors[i + (DIRECTIONS.length)] = getDistanceToBody(head, dx, dy);
         }
+
+//        sensors[16] = (double) (food[0] - head[0]) / (double) width;
+//        sensors[17] = (double) (food[1] - head[1]) / (double) height;
 
         switch (direction) {
             case UP -> {
@@ -208,6 +261,9 @@ public class SnakeGame {
                 sensors[27] = 1.0; // RIGHT
             }
         }
+
+//        sensors[20] = (double) food[0] / (double) width;
+//        sensors[21] = (double) food[1] / (double) height;
 
         return sensors;
     }
@@ -270,11 +326,24 @@ public class SnakeGame {
     }
 
     public double getFitness() {
-        return fitness;
+        // First term
+        double term1 = stepsBetweenApples;
+
+        // Second term
+        double term2 = Math.pow(2, score) + Math.pow(stepsBetweenApples, 2.1) * 500;
+
+        // Third term
+        double term3 = Math.pow(score, 1.2) * Math.pow(0.25 * stepsBetweenApples, 1.3);
+
+        // Complete function
+        return term1 + term2 - term3;
+
+//        return totalSteps;
     }
 
     public NeuralNetwork getBrain() {
-        return brain;
+        NeuralNetwork returnedBrain = new NeuralNetwork(this.brain.getStructure(), this.brain.getWeights(), this.brain.getBiases());
+        return returnedBrain;
     }
 
     public void setBrain(NeuralNetwork brain) {
