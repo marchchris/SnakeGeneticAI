@@ -24,7 +24,10 @@ public class SnakeGame implements Cloneable {
 
     private boolean isReplay;
 
+    private int snakeBodyParts = 2;
+
     private LinkedList<int[]> foodHistory;
+
 
 
     public static final int[][] DIRECTIONS = {
@@ -63,7 +66,7 @@ public class SnakeGame implements Cloneable {
         // Initialize snake with length 3, moving upward by default
         snake.add(new int[] { startX, startY });
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < snakeBodyParts; i++) {
             snake.add(new int[] { startX, startY + i });
         }
 
@@ -97,7 +100,7 @@ public class SnakeGame implements Cloneable {
         // Initialize snake with length 3, moving upward by default
         snake.add(new int[] { startX, startY });
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < snakeBodyParts; i++) {
             snake.add(new int[] { startX, startY + i });
         }
 
@@ -370,7 +373,7 @@ public class SnakeGame implements Cloneable {
 
     public void calculateFitness() {
 
-        double computedFitness = totalSteps * (score + 1);
+        double computedFitness = totalSteps * (Math.pow(score, 2));
         this.fitness = computedFitness;
     }
 
@@ -390,6 +393,13 @@ public class SnakeGame implements Cloneable {
     public NeuralNetwork getBrain() {
         NeuralNetwork returnedBrain = new NeuralNetwork(this.brain.getStructure(), this.brain.getWeights(), this.brain.getBiases());
         return returnedBrain;
+
+
+
+    }
+
+    public NeuralNetwork getShallowBrain() {
+        return brain;
     }
 
     public void setBrain(NeuralNetwork brain) {
@@ -436,5 +446,9 @@ public class SnakeGame implements Cloneable {
     @Override
     public SnakeGame clone() throws CloneNotSupportedException {
         return (SnakeGame) super.clone();
+    }
+
+    public int getMovesLeft() {
+        return movesLeft;
     }
 }
