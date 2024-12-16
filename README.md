@@ -21,7 +21,7 @@
   <a href="#related">Related</a>
 </p>
 
-![Screenshot](imgs\snakeGif.gif)
+![screenshot](imgs\snakeGif.gif)
 
 ## Key Features
 
