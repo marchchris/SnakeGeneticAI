@@ -1,9 +1,5 @@
-
 <h1 align="center">
-  <br>
-  <br>
   Snake AI
-  <br>
 </h1>
 
 <h4 align="center">Neural Network Learns To Play Snake By Genetic Algorithm</h4>
