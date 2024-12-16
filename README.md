@@ -11,8 +11,7 @@
 
 <p align="center">
   <a href="https://youtube.com/@karismcode?si=L_IycSlhPtZrfesq">
-    <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=Youtube&color=%23ff3030
-    " style = "width: 200px">
+    <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=Youtube&color=%23ff303">
   </a>
 </p>
 
