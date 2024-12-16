@@ -21,7 +21,9 @@
   <a href="#related">Related</a>
 </p>
 
-![screenshot](imgs\snakeGif.gif)
+<p align = "center">
+  <img src = "imgs\snakeGif.gif">
+</p>
 
 ## Key Features
 
@@ -31,7 +33,7 @@
   - 3 x 8 = 24 total sensors.
 
   <p align = "center">
-  <img src = "imgs\snakeSensors.PNG" style = "width: 200px">
+    <img src = "imgs\snakeSensors.PNG" style = "width: 200px">
   </p>
 
 * **Self Trained By Genetic Algorithm**
