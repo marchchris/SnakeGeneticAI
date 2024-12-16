@@ -86,11 +86,6 @@ public class Main {
             }
         }
 
-        // Create a new child network and set the weights and biases
-//        NeuralNetwork childNetwork = new NeuralNetwork(network1.getStructure());
-//        childNetwork.setWeights(newWeights);
-//        childNetwork.setBiases(newBiases);
-
         NeuralNetwork childNetwork = new NeuralNetwork(network1.getStructure(), newWeights, newBiases);
 
         return childNetwork;
@@ -105,8 +100,6 @@ public class Main {
 
 
         SnakeGameManager manager = new SnakeGameManager(gameCount, 20, 20);
-//        SnakeGame singleGame = manager.getGames().getFirst();
-//        SnakeGameDisplay displayer = new SnakeGameDisplay(singleGame);
 
         SnakeGameDisplay displayer = null;
 
@@ -141,24 +134,23 @@ public class Main {
 
 
 
-                    if (manager.getCurrentGeneration() < 200) {
+                    if (displayer.isSuperSpeedEnabled()) {
                         Thread.sleep(1); // Simulate step time
                     } else {
                         Thread.sleep(100);
                     }
                 }
             } else {
+                System.out.println("Waiting for first generation to complete.");
                 while (manager.getGames().stream().anyMatch(game -> !game.isGameOver())) {
                     // Update games and refresh the display
                     manager.updateGames();
                     int activeGames = manager.getActiveGameCount();
 
 
-                    if (manager.getCurrentGeneration() < 200) {
-                        Thread.sleep(1); // Simulate step time
-                    } else {
-                        Thread.sleep(100);
-                    }
+                    Thread.sleep(1); // Simulate step time
+
+
                 }
             }
 

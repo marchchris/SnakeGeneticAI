@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class SnakeGameDisplay extends JPanel {
     private SnakeGame game;
-    private final int cellSize = 20;
+    private final int cellSize = 30;
     private int currentGeneration = 0;
     private int currentActiveGames = 0;
     private double prevTopFitness = 0.0;
@@ -16,14 +16,36 @@ public class SnakeGameDisplay extends JPanel {
     public Color green = new Color(0, 255, 0, 128);
     public Color white = new Color(255, 255, 255, 128);
 
+    private JCheckBox superSpeedCheckBox; // Checkbox for super speed
+
     public SnakeGameDisplay(SnakeGame game) {
         this.game = game;
         JFrame frame = new JFrame("Snake Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 1000);
+        frame.setSize(1280, 720);
+
+// Create and configure JCheckBox
+        superSpeedCheckBox = new JCheckBox("Super Speed");
+        superSpeedCheckBox.setForeground(Color.WHITE);
+        superSpeedCheckBox.setOpaque(false); // Transparent background
+        superSpeedCheckBox.setBorder(null); // Remove highlight box
+        superSpeedCheckBox.setFocusPainted(false); // Remove focus indicator
+        superSpeedCheckBox.setBounds(cellSize * game.getWidth() + 20, 125, 200, 20); // Set position
+
+
+        // Add the checkbox to the panel
+        setLayout(null); // Use absolute positioning for the checkbox
+        add(superSpeedCheckBox);
+
+
         frame.add(this);
         frame.setVisible(true);
     }
+
+    public boolean isSuperSpeedEnabled() {
+        return superSpeedCheckBox.isSelected();
+    }
+
 
     public void setGame(SnakeGame newGame) {
         this.game = newGame;
@@ -69,15 +91,16 @@ public class SnakeGameDisplay extends JPanel {
         g.drawString("Generations Top Fitness: " + game.getReplayFitness(), cellSize * game.getWidth() + 20, 100);
         g.drawString("Active Agents: " + currentActiveGames, cellSize * game.getWidth() + 20, 120);
 
-        drawNeuralNetwork(g);
-    }
 
-    private double[] applySigmoid(double[] arr) {
-        double[] activatedOutput = new double[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            activatedOutput[i] = 1 / (1 + Math.exp(-arr[i])); // Sigmoid
+        if (game.isGameOver()) {
+            g.setColor(Color.RED);
+            g.drawString("Waiting For Next Generation To Complete.", cellSize * game.getWidth() + 20, 160);
         }
-        return activatedOutput;
+
+        drawNeuralNetwork(g);
+
+
+
     }
 
     private void drawNeuralNetwork(Graphics g) {
@@ -212,13 +235,13 @@ public class SnakeGameDisplay extends JPanel {
         int[] head = game.getSnake().get(0);
         double[] sensors = game.getSensors();
 
-        int[] headPosition = { (head[0] * cellSize + cellSize / 2) + 10, (head[1] * cellSize + cellSize / 2) + 10 };
+        int[] headPosition = { (head[0] * cellSize + (cellSize / 2)) + 10, (head[1] * cellSize + (cellSize / 2)) + 10 };
 
         for (int i = 0; i < SnakeGame.DIRECTIONS.length; i++) {
             int dx = SnakeGame.DIRECTIONS[i][0];
             int dy = SnakeGame.DIRECTIONS[i][1];
 
-            int distanceToWall = (int) (sensors[i] * cellSize);
+            int distanceToWall = (int) ((sensors[i]) * 20);
 
             int endX = (headPosition[0] + dx * distanceToWall * cellSize) - (dx * (cellSize / 2)) ;
             int endY = (headPosition[1] + dy * distanceToWall * cellSize) - (dy * (cellSize / 2));
