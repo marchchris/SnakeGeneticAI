@@ -17,7 +17,7 @@
 </p>
 
 
-![Screenshot](snakeGif.gif)
+![Screenshot](imgs\snakeGif.gif)
 
 ## Key Features
 
