@@ -38,7 +38,7 @@
   - Each generation has 1000 snakes.
   <br>
   <p align = "center">
-  <img src = "snakeGeneticAlg.png" style = "width: 400px; background-color: transparent;">
+  <img src = "imgs\snakeGeneticAlg.png" style = "width: 400px; background-color: transparent;">
   </p>
   
 
