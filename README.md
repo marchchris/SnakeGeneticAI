@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://youtube.com/@karismcode?si=L_IycSlhPtZrfesq">
-    <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=Youtube&color=%ff2e2e">
+    <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=Youtube&color=%ff2e2e" alt="snake preview">
   </a>
 </p>
 
