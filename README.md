@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/c812d616-38bd-49c7-b9b5-3d1210cb114e)<h1 align="center">
+<h1 align="center">
   Snake AI
 </h1>
 
@@ -33,7 +33,9 @@
   </p>
 
   - The values from these 24 sensors are then used as inputs for the 24x16x16x4 feedforward network.
-    ![image](https://github.com/user-attachments/assets/9e74b0e2-3fd6-46df-8bfc-79d84bec69a5)
+  <p align = "center">
+    <img src = "imgs\neuralNetworkArchitecture.png" style = "width: 400px; background-color: transparent;">
+  </p>
   - The output with the highest activation will be the action the snake takes for that step.
 
 
