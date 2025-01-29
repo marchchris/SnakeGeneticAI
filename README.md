@@ -36,9 +36,8 @@
   <p align = "center">
     <img src = "imgs\neuralNetworkArchitecture.PNG" style = "width: 800px; background-color: transparent;">
   </p>
-  - The output with the highest activation will be the action the snake takes for that step.
-
-</br>
+  - The output with the highest activation will be the action the snake takes for that step.  
+  
 * **Self Trained By Genetic Algorithm**
   - For each generation Top 10% of snakes immediately go to next generation.
   - To populate the other 90% of the next generation, 2 parents are chosen by roullete wheel selection from current generation ranked by fitness, and crossover networks and produce a child snake 
