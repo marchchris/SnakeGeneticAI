@@ -34,7 +34,7 @@
 
   - The values from these 24 sensors are then used as inputs for the 24x16x16x4 feedforward network.
   <p align = "center">
-    <img src = "imgs\neuralNetworkArchitecture.PNG" style = "width: 400px; background-color: transparent;">
+    <img src = "imgs\neuralNetworkArchitecture.PNG" style = "width: 800px; background-color: transparent;">
   </p>
   - The output with the highest activation will be the action the snake takes for that step.
 
