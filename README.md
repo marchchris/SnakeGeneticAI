@@ -36,7 +36,7 @@
   <p align = "center">
     <img src = "imgs\neuralNetworkArchitecture.PNG" style = "width: 800px; background-color: transparent;">
   </p>
-  - The output with the highest activation will be the action the snake takes for that step.  
+  - The output with the highest activation will be the action the snake takes for that step.<br> 
   
 * **Self Trained By Genetic Algorithm**
   - For each generation Top 10% of snakes immediately go to next generation.
