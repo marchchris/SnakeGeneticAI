@@ -45,9 +45,8 @@
   - Then child snake is then mutated and placed into the next generation.
   - Each generation has 1000 snakes.
   <br>
-  <p align = "center">
-  <img src = "imgs\snakeGeneticAlg.png" style = "width: 400px; background-color: transparent;">
-  </p>
+![snakeGeneticAlg](https://github.com/user-attachments/assets/0ac9284d-12b6-46ce-914a-1c00f4e03e93)
+
   
 
 * **The Fitness Function** 
