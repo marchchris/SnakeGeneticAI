@@ -45,7 +45,10 @@
   - Then child snake is then mutated and placed into the next generation.
   - Each generation has 1000 snakes.
   <br>
-![snakeGeneticAlg](https://github.com/user-attachments/assets/0ac9284d-12b6-46ce-914a-1c00f4e03e93)
+
+  <p style = "width: 200px">
+    ![snakeGeneticAlg](https://github.com/user-attachments/assets/0ac9284d-12b6-46ce-914a-1c00f4e03e93)
+  </p>
 
   
 
