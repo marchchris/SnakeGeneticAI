@@ -46,10 +46,9 @@
   - Each generation has 1000 snakes.
   <br>
 
-  <p style = "width: 200px">
-    ![snakeGeneticAlg](https://github.com/user-attachments/assets/0ac9284d-12b6-46ce-914a-1c00f4e03e93)
+  <p align = "center">
+  <img src = "imgs\snakeGeneticAlg.png" style = "width: 400px; background-color: transparent;">
   </p>
-
   
 
 * **The Fitness Function** 
