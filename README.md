@@ -5,6 +5,7 @@ A Neural Network That Learns to Play Snake Using a Genetic Algorithm
 <p align="center">
   <a href="https://youtube.com/@karismcode?si=L_IycSlhPtZrfesq">
     <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=YouTube&color=%ff2e2e" alt="YouTube Badge">
+     <img src="imgs/snakeGif.gif" alt="Snake AI in action">
   </a>
 </p>
 
