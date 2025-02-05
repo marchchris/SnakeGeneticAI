@@ -1,69 +1,84 @@
-<h1 align="center">
-  Snake AI
-</h1>
+# 🐍 Snake AI  
 
-<h4 align="center">Neural Network Learns To Play Snake By Genetic Algorithm</h4>
-
+### 🎯 A Neural Network That Learns to Play Snake Using a Genetic Algorithm  
 
 <p align="center">
   <a href="https://youtube.com/@karismcode?si=L_IycSlhPtZrfesq">
-    <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=Youtube&color=%ff2e2e" alt="snake preview">
+    <img src="https://img.shields.io/youtube/channel/views/UC6c-EOogIj6DNAbDJ8teXfQ?style=flat&label=YouTube&color=%ff2e2e" alt="YouTube Badge">
   </a>
 </p>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#download">Download</a> •
-  <a href="#related">Related</a>
+  <a href="#key-features">🚀 Features</a> •
+  <a href="#download">📥 Download</a> •
+  <a href="#related">🎥 Related</a>
 </p>
 
-<p align = "center">
-  <img src = "imgs\snakeGif.gif">
+<p align="center">
+  <img src="imgs/snakeGif.gif" alt="Snake AI in action">
 </p>
 
-## Key Features
+---
 
-* **Snake Has 24 Sensors**
-  - The Snake can see in 8 directions, N, S, W, E, NE, SE, SW, NW.
-  - In each of these directions the snake can see distance to wall, if there is food, or if there is its tail.
-  - 3 x 8 = 24 total sensors.
+## 🚀 Key Features  
 
-  <p align = "center">
-    <img src = "imgs\snakeSensors.PNG" style = "width: 200px">
-  </p>
+### 🧠 **24-Sensor Vision System**  
+- The snake perceives its environment through **8 directional sensors**:  
+  **North, South, West, East, NE, SE, SW, NW**  
+- Each sensor detects:  
+  - Distance to the wall  
+  - Presence of food  
+  - Its own tail  
+- **Total Inputs:** `3 x 8 = 24 sensors`
 
-  - The values from these 24 sensors are then used as inputs for the 24x16x16x4 feedforward network.
-  <p align = "center">
-    <img src = "imgs\neuralNetworkArchitecture.PNG" style = "width: 600px; background-color: transparent;">
-  </p>
-  - The output with the highest activation will be the action the snake takes for that step.<br> 
-  
-* **Self Trained By Genetic Algorithm**
-  - For each generation Top 10% of snakes immediately go to next generation.
-  - To populate the other 90% of the next generation, 2 parents are chosen by roullete wheel selection from current generation ranked by fitness, and crossover networks and produce a child snake 
-    - (Crossing over is just averaging weights of parent networks)
-  - Then child snake is then mutated and placed into the next generation.
-  - Each generation has 1000 snakes.
-  <br>
+<p align="center">
+  <img src="imgs/snakeSensors.PNG" width="300px" alt="Snake Sensor System">
+</p>
 
-  <p align = "center">
-  <img src = "imgs\snakeGeneticAlg.png" style = "width: 400px; background-color: transparent;">
-  </p>
-  
+### 🤖 **Neural Network Decision Making**  
+- The game state is processed through a **feedforward neural network**  
+  **Architecture:** `24 (input) → 16 → 16 → 4 (output)`  
+- The output with the highest activation determines the snake’s move  
 
-* **The Fitness Function** 
-  - As my goal for the snake was top learn to survive for aslong as possible and achieve a score as high as possible. I settled on a fitness function that rewards simply surviving by avoiding walls, but exponentially rewards eating apples as the game progresses to continue incentivising seeking apples.
+<p align="center">
+  <img src="imgs/neuralNetworkArchitecture.PNG" width="600px" alt="Neural Network Architecture">
+</p>
 
-  $$
-  \text{fitness} = \text{totalSteps} \cdot \text{score}^2
-  $$
+### 🧬 **Self-Learning via Genetic Algorithm**  
+- **Evolution Process:**
+  - The **top 10%** of snakes survive to the next generation  
+  - The remaining **90%** are generated using:
+    - **Roulette wheel selection** (choosing parents based on fitness)  
+    - **Crossover** (combining parent weights)  
+    - **Mutation** (random weight adjustments)  
+  - Each generation consists of **1,000 snakes**  
 
+<p align="center">
+  <img src="imgs/snakeGeneticAlg.png" width="400px" alt="Genetic Algorithm Process">
+</p>
 
+### 📈 **Fitness Function**  
+The AI is rewarded for **both survival and apple collection**:  
+- **Longer survival** earns a linear reward  
+- **Eating apples** gives an **exponential** bonus  
 
-## Download
+\[
+\text{fitness} = \text{totalSteps} \cdot \text{score}^2
+\]
 
-You can [download](https://github.com/marchchris/SnakeGeneticAI/tree/fc39bd07b3be70b2887ffb65be67748dedfd9712/src) the latest version of this project and run it for yourself to watch the snake learn and grow :)
+---
 
-## Related
+## 📥 Download & Run  
 
-If you want to learn more about this project I have created a youtube video demonstrating and explaining how the neural network and genetic algorithm works [here](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT).
+🔗 **[Download Here](https://github.com/marchchris/SnakeGeneticAI/tree/fc39bd07b3be70b2887ffb65be67748dedfd9712/src)**  
+
+Clone the repo and run it locally to watch the AI evolve over time! 🚀  
+
+---
+
+## 🎥 Related  
+
+📺 **Watch the full explanation & demo on YouTube:**  
+[▶️ Neural Network Snake AI Video](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT)  
+
+---
