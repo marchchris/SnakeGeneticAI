@@ -24,7 +24,7 @@
 
 ### 🧠 **24-Sensor Vision System**  
 - The snake perceives its environment through **8 directional sensors**:  
-  **North, South, West, East, NE, SE, SW, NW**  
+  **N, S, W, E, NE, SE, SW, NW**  
 - Each sensor detects:  
   - Distance to the wall  
   - Presence of food  
@@ -62,9 +62,10 @@ The AI is rewarded for **both survival and apple collection**:
 - **Longer survival** earns a linear reward  
 - **Eating apples** gives an **exponential** bonus  
 
-\[
+$$
 \text{fitness} = \text{totalSteps} \cdot \text{score}^2
-\]
+$$
+
 
 ---
 
