@@ -66,20 +66,14 @@ $$
 \text{fitness} = \text{totalSteps} \cdot \text{score}^2
 $$
 
-
----
-
 ## 📥 Download & Run  
 
 🔗 **[Download Here](https://github.com/marchchris/SnakeGeneticAI/tree/fc39bd07b3be70b2887ffb65be67748dedfd9712/src)**  
 
 Clone the repo and run it locally to watch the AI evolve over time! 🚀  
 
----
-
 ## 🎥 Related  
 
 📺 **Watch the full explanation & demo on YouTube:**  
 [▶️ Neural Network Snake AI Video](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT)  
 
----
