@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="#key-features">🚀 Features</a> •
-  <a href="#download">📥 Download</a> •
-  <a href="#related">🎥 Related</a>
+  <a href="#key-features">Features</a> •
+  <a href="#download">Download</a> •
+  <a href="#related">Related</a>
 </p>
 
 <p align="center">
