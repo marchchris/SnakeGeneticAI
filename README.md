@@ -9,12 +9,6 @@ A Neural Network That Learns to Play Snake Using a Genetic Algorithm
 </p>
 
 <p align="center">
-  <a href="#key-features">Features</a> •
-  <a href="#download">Download</a> •
-  <a href="#related">Related</a>
-</p>
-
-<p align="center">
   <img src="imgs/snakeGif.gif" alt="Snake AI in action">
 </p>
 
