@@ -1,6 +1,6 @@
 # 🐍 Snake AI  
 
-### A Neural Network That Learns to Play Snake Using a Genetic Algorithm  
+A Neural Network That Learns to Play Snake Using a Genetic Algorithm  
 
 <p align="center">
   <a href="https://youtube.com/@karismcode?si=L_IycSlhPtZrfesq">
