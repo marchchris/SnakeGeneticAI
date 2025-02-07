@@ -73,12 +73,10 @@ In the future to possibly improve the peformance of this AI Snake, I would imple
 
 
 ## 📥 Download & Run  
-
+Clone the repo and run it locally to watch the AI evolve over time!
 🔗 **[Download Here](https://github.com/marchchris/SnakeGeneticAI/releases/tag/v1.0.0)**  
 
-Clone the repo and run it locally to watch the AI evolve over time! 🚀  
+
 
 ## 🎥 Related  
-
-📺 **Watch the full explanation & demo on YouTube:**  
 [▶️ Neural Network Snake AI Video](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT)  
