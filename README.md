@@ -16,6 +16,7 @@
   - Presence of food  
   - Its own tail  
 - **Total Inputs:** `3 x 8 = 24 sensors`
+- The values from these 24 sensors are then inputted into the 24 inputs of the neural network.
 
 <p align="center">
   <img src="imgs/snakeSensors.PNG" width="300px" alt="Snake Sensor System">
