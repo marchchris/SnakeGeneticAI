@@ -60,7 +60,7 @@ After training for **1000 generations** with **1000 active agents** simulatenous
 <img src="imgs/snakeChart.PNG" width="400px" alt="Snake Chart">
 </p>
 
-I believe if the AI was continued to be trained after generation 1000, it would continue to maximise the score even higher, however even running while running the training at **1000x** simulation speed, 1000 generations still took several hours to train with each generation becoming longer as the snake survives longer.
+I believe that if the AI were trained beyond generation 1000, it would likely continue to maximize the score even further. However, even with the training running at **1000x** simulation speed, reaching 1000 generations still took several hours. Additionally, as the snake survives longer in each generation, the training duration progressively increases.
 
 ## 🛠️ Possible Future Improvements
 In the future to possibly improve the peformance of this AI Snake, I would implement:
