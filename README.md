@@ -80,4 +80,5 @@ Clone the repo and run it locally to watch the AI evolve over time!
 
 
 ## 🎥 Related  
+If you want to learn more or just want to watch the snake play. I have made an indepth video about the development of the AI with a full run of the final version of the snake on my Youtube channel.
 [▶️ Neural Network Snake AI Video](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT)  
