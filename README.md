@@ -1,4 +1,4 @@
-# 🐍 Snake AI  
+# Snake AI  
 
  A Neural Network That Learns to Play Snake Using a Genetic Algorithm
 
@@ -6,7 +6,7 @@
   <img src="imgs/snakeGif.gif" alt="Snake AI in action">
 </p>
 
-## 🚀 Key Features  
+## Key Features  
 
 ### **24-Sensor Vision System**  
 - The snake perceives its environment through **8 directional sensors**:  
@@ -53,7 +53,7 @@ $$
 \text{fitness} = \text{totalSteps} \cdot \text{score}^2
 $$
 
-## 📈 Peformance
+## Peformance
 After training for **1000 generations** with **1000 active agents** simulatenously, the AI managed to achieve a maximum score of `96` with a average score of `44.51`.
 
 <p align = "center">
@@ -62,7 +62,7 @@ After training for **1000 generations** with **1000 active agents** simulatenous
 
 I believe that if the AI were trained beyond generation 1000, it would likely continue to maximize the score even further. However, even with the training running at **1000x** simulation speed, reaching 1000 generations still took several hours. Additionally, as the snake survives longer in each generation, the training duration progressively increases.
 
-## 🛠️ Possible Future Improvements
+## Possible Future Improvements
 In the future to possibly improve the peformance of this AI Snake, I would implement:
 - **Dynamic Fitness Function Adjustments**
     - Modify the **fitness function** over time to shift priorities dynamically.
@@ -72,13 +72,6 @@ In the future to possibly improve the peformance of this AI Snake, I would imple
   - Introduce a short-term memory buffer, allowing the AI to recall previous actions and outcomes.  
   - This could help prevent repeated mistakes and reinforce successful behaviors.  
 
-
-## 📥 Download & Run  
-Clone the repo and run it locally to watch the AI evolve over time!
-🔗 **[Download Here](https://github.com/marchchris/SnakeGeneticAI/releases/tag/v1.0.0)**  
-
-
-
-## 🎥 Related  
+## Related  
 If you want to learn more or just want to watch the snake play. I have made an indepth video about the development of the AI with a full run of the final version of the snake on my Youtube channel.
-[▶️ Neural Network Snake AI Video](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT)  
+[Neural Network Snake AI Video](https://youtu.be/iqisOpNVir8?si=l0bohj50Q8YSrfJT)  
