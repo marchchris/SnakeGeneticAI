@@ -1,6 +1,6 @@
-# Snake AI  
+# Natural Selection Evolving Snake AI
 
- A Neural Network That Learns to Play Snake Using a Genetic Algorithm
+ Neural Network powered snake agents learn to play the classic game of snake by selectively breeding with 1000 other agents via the process of natural selection.
 
 <p align="center">
   <img src="imgs/snakeGif.gif" alt="Snake AI in action">
